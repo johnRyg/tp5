@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+	<title>测试vue</title>
+	<script src="/static/js/vue221.js"></script>
+</head>
+<body>
+	<div id="cc">
+	<h3>vue</h3>
+		<p>{{message}}</p>
+		<input type="test" v-model="message"></input>
+	</div>
+
+</body>
+<script type="text/javascript">
+	var App=new Vue({
+		el:"#cc",
+		data:{
+			message:'hello,vuejs'
+		}
+	})
+	
+</script>
+</html>

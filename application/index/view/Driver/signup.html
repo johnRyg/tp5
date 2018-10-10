@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>报名选择</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/js/jquery-2.1.0.min.js"></script>
+</head>
+<body class="container">
+<div class="row">
+
+<div class="col-md-12">
+
+欢迎您：{$username}
+<a href="/index/home/logout">注销</a>
+<a href="/regist.html">注册</a>
+ <a href='/index/driver/index'>驾校列表</a>
+    <form action="/index/teacher/index" method="POST">
+    <input type="text" name="name" id="name" class="form-control"></input>
+    <input type="submit" id="qe" value="按名字查询" class="btn btn-info"/>
+    
+    <input type="button" id="deleteAll"  value="批量删除" class="btn btn-info"></input>
+    
+</form>
+     <table class="table table-hover table-bordered">
+        <tr class="info">      
+            <th>序号</th>
+            <th>套餐名称</th>
+            <th>价格</th>
+            <th>描述</th>
+            <th>操作</th>         
+        </tr>
+        {volist name="packages" id="driver" key="key"}
+        <tr>        
+            <td>{$key}</td>
+            <td>{$driver->getData('name')}</td>           
+            <td>{$driver->getData('price')}</td>
+            <td>{$driver->getData('description')}</td>
+            <td><a href="{:url('/index/driver/mode',['id'=>$driverId,'packageId'=>$driver.id])}">报名</a>
+              
+            </td>
+        </tr>
+        {/volist}
+
+    </table>
+    </div>
+    </div>
+</body>
+
+</html>

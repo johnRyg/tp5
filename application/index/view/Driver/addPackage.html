@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>新增套餐</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/js/jquery-2.1.0.min.js"></script>
+</head>
+<body class="container">
+	
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{:url('/index/driver/insertPackage',['driverId'=>$driverId])}" method="post" >
+            <div class="form-group">
+                <label>套餐名称:</label>
+                <input type="text" name="name" />
+            </div>
+            <div class="form-group">
+                <label>价格:</label>
+                <input type="text" name="price" />
+            </div>
+           
+            
+            <div class="form-group">
+
+                <label>描述：</label>
+                <input type="text" name="description" />
+            </div>
+                <button type="submit" class="btn btn-success">保存</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+try{
+	document.execCommand("BackgroundImageCache",false,true);
+}catch(e){}
+function $(){
+	var elements=[];
+	for(var i=0;i<arguments.length;i++){
+		var element=arguments[i];
+		if(typeof element=="string"){
+			element=document.getElementById(element);
+		}
+		if(arguments.length==1){
+			return element;
+		}
+		elements.push(element);
+	}
+	return elements;
+}
+function getStyle(obj,option){
+	if(obj.currentStyle){
+		var value=obj.currentStyle[option];
+		if(value=="auto")value="0px";
+	}else{
+		var value=document.defaultView.getComputedStyle(obj,null)[option];
+	}
+	return value;
+}
+Function.prototype.bind=function(object){
+	var method=this;
+	return function(){
+		method.apply(object,arguments);	
+	}
+}
+var Class={
+	create:function(){
+		return function(){
+			this.initialize.apply(this,arguments);	
+		}
+	}
+}
+var Scroll=Class.create();
+Scroll.prototype={
+	initialize:function(parent){
+		this.parent=$(parent);
+		this.step=1;
+		this.speed=30;
+		this.flagLeft=true;
+		var obj_ul=this.parent.getElementsByTagName("ul")[0];
+		var arr_li=obj_ul.getElementsByTagName("li");
+		var obj_li=arr_li[0];
+		var li_width=obj_li.offsetWidth;
+		li_width+=parseInt(getStyle(obj_li,"marginLeft"))+parseInt(getStyle(obj_li,"marginRight"));	
+		var ul_width=li_width*(arr_li.length);
+		ul_width+=parseInt(getStyle(obj_ul,"paddingLeft"))+parseInt(getStyle(obj_ul,"paddingRight"));
+		ul_width+=parseInt(getStyle(obj_ul,"marginLeft"))+parseInt(getStyle(obj_ul,"marginRight"));
+		this.maxWidth=ul_width*2;
+		obj_ul.parentNode.style.width=ul_width*4+"px";
+		obj_ul.innerHTML+=obj_ul.innerHTML;
+		obj_ul.innerHTML+=obj_ul.innerHTML;
+		this.moveLeft();
+		this.parent.onmouseover=this.stop.bind(this);
+		this.parent.onmouseout=this.start.bind(this);
+		
+		if(arguments.length>1){
+			this.arrowLeft=$(arguments[1]);
+			this.arrowLeft.onmouseover=function(){
+				this.stop();
+				this.moveLeft();
+				this.flagLeft=true;
+			}.bind(this);
+		}
+		if(arguments.length>2){
+			this.arrowRight=$(arguments[2]);
+			this.arrowRight.onmouseover=function(){
+				this.stop();
+				this.moveRight();
+				this.flagLeft=false;
+			}.bind(this);
+		}
+	},
+	moveLeft:function(){
+		if(this.parent.scrollLeft>this.parent.scrollWidth-this.maxWidth){
+			this.parent.scrollLeft-=this.maxWidth;
+		}else{
+			this.parent.scrollLeft+=this.step;
+		}
+		this.timer=setTimeout(this.moveLeft.bind(this),this.speed);
+	},
+	moveRight:function(){
+		if(this.parent.scrollLeft<this.maxWidth/2){
+			this.parent.scrollLeft+=this.maxWidth/2;
+		}else{
+			this.parent.scrollLeft-=this.step;
+		}
+		this.timer=setTimeout(this.moveRight.bind(this),this.speed);
+	},
+	stop:function(){
+		clearTimeout(this.timer);	
+	},
+	start:function(){
+		if(this.flagLeft){
+			this.moveLeft();
+		}else{
+			this.moveRight();
+		}
+	}
+}
+new Scroll("scroll_container2","arrow_left2","arrow_right2");
